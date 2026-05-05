@@ -1,0 +1,19 @@
+def generate_quadruple(expr):
+    temp = 1
+    stack = []
+    quadruples = []
+
+    for char in expr:
+        if char.isalnum():
+            stack.append(char)
+        else:
+            op2 = stack.pop()
+            op1 = stack.pop()
+            result = f"T{temp}"
+            temp += 1
+            quadruples.append((char, op1, op2, result))
+            stack.append(result)
+
+    return quadruples
+
+print(generate_quadruple("ab+c*"))
