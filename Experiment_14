@@ -1,0 +1,19 @@
+blocks = {
+    "B1": {"gen": {"a"}, "kill": {"b"}},
+    "B2": {"gen": {"b"}, "kill": {"a"}}
+}
+
+IN = {b: set() for b in blocks}
+OUT = {b: set() for b in blocks}
+
+changed = True
+
+while changed:
+    changed = False
+    for b in blocks:
+        old_out = OUT[b].copy()
+        OUT[b] = blocks[b]["gen"] | (IN[b] - blocks[b]["kill"])
+        if OUT[b] != old_out:
+            changed = True
+
+print("OUT:", OUT)
