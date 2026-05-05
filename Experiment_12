@@ -1,0 +1,20 @@
+def code_generator(expr):
+    stack = []
+    temp = 1
+
+    for char in expr:
+        if char.isalnum():
+            stack.append(char)
+        else:
+            b = stack.pop()
+            a = stack.pop()
+            t = f"T{temp}"
+            temp += 1
+
+            print(f"LOAD {a}")
+            print(f"{char} {b}")
+            print(f"STORE {t}")
+
+            stack.append(t)
+
+code_generator("ab+c*")
