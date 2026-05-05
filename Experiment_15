@@ -1,0 +1,13 @@
+stack = []
+
+def push(var):
+    stack.append(var)
+    print(f"Pushed {var}")
+
+def pop():
+    if stack:
+        print(f"Popped {stack.pop()}")
+
+push("a")
+push("b")
+pop()
