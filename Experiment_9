@@ -1,0 +1,26 @@
+grammar = {
+    "S'": ["S"],
+    "S": ["CC"],
+    "C": ["cC", "d"]
+}
+
+def closure(items):
+    closure_set = set(items)
+
+    while True:
+        new_items = set()
+        for item in closure_set:
+            dot_pos = item.find('.')
+            if dot_pos < len(item) - 1:
+                symbol = item[dot_pos + 1]
+                if symbol in grammar:
+                    for prod in grammar[symbol]:
+                        new_items.add(symbol + "->." + prod)
+        if new_items.issubset(closure_set):
+            break
+        closure_set |= new_items
+
+    return closure_set
+
+items = {"S'->.S"}
+print("Closure:", closure(items))
