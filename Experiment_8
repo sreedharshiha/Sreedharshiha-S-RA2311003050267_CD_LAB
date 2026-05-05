@@ -1,0 +1,26 @@
+grammar = {
+    'E': ['E+T', 'T'],
+    'T': ['T*F', 'F'],
+    'F': ['(E)', 'i']
+}
+
+LEADING = {nt: set() for nt in grammar}
+TRAILING = {nt: set() for nt in grammar}
+
+def compute_leading():
+    for nt in grammar:
+        for prod in grammar[nt]:
+            if prod[0].islower() or not prod[0].isalpha():
+                LEADING[nt].add(prod[0])
+
+def compute_trailing():
+    for nt in grammar:
+        for prod in grammar[nt]:
+            if prod[-1].islower() or not prod[-1].isalpha():
+                TRAILING[nt].add(prod[-1])
+
+compute_leading()
+compute_trailing()
+
+print("LEADING:", LEADING)
+print("TRAILING:", TRAILING)
