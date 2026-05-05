@@ -1,0 +1,25 @@
+def shift_reduce_parser(input_string):
+    stack = []
+    input_string += '$'
+
+    print("Stack\tInput\tAction")
+
+    while True:
+        action = ""
+
+        if input_string[0] != '$':
+            stack.append(input_string[0])
+            input_string = input_string[1:]
+            action = "Shift"
+        else:
+            action = "Reduce/Accept"
+
+        print(f"{stack}\t{input_string}\t{action}")
+
+        if input_string == '$':
+            break
+
+    print("Parsing Completed")
+
+
+shift_reduce_parser("a+b")
