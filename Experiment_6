@@ -1,0 +1,32 @@
+grammar = {
+    'E': ['TR'],
+    'R': ['+TR', 'ε']
+}
+
+FIRST = {
+    'E': {'i', '('},
+    'R': {'+', 'ε'}
+}
+
+FOLLOW = {
+    'E': {'$', ')'},
+    'R': {'$', ')'}
+}
+
+table = {}
+
+for A in grammar:
+    for prod in grammar[A]:
+        first_set = FIRST[A]
+
+        for terminal in first_set:
+            if terminal != 'ε':
+                table[(A, terminal)] = prod
+
+        if 'ε' in first_set:
+            for terminal in FOLLOW[A]:
+                table[(A, terminal)] = prod
+
+print("Parsing Table:")
+for key in table:
+    print(f"{key}: {table[key]}")
