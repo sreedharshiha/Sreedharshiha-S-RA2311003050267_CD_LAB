@@ -1,0 +1,13 @@
+dag = {}
+
+def add_node(op, left, right):
+    key = (op, left, right)
+    if key not in dag:
+        dag[key] = f"N{len(dag)}"
+    return dag[key]
+
+n1 = add_node('+', 'a', 'b')
+n2 = add_node('*', n1, 'c')
+n3 = add_node('+', 'a', 'b')  # reused
+
+print("DAG:", dag)
