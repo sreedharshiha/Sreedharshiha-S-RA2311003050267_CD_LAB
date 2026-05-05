@@ -1,0 +1,70 @@
+from collections import defaultdict
+
+# Example NFA structure
+nfa = {
+    0: {'ε': [1, 2]},
+    1: {'a': [1]},
+    2: {'b': [2]},
+}
+
+final_states = {1, 2}
+start_state = 0
+
+
+def epsilon_closure(states):
+    stack = list(states)
+    closure = set(states)
+
+    while stack:
+        state = stack.pop()
+        for next_state in nfa.get(state, {}).get('ε', []):
+            if next_state not in closure:
+                closure.add(next_state)
+                stack.append(next_state)
+
+    return closure
+
+
+def move(states, symbol):
+    result = set()
+    for state in states:
+        result.update(nfa.get(state, {}).get(symbol, []))
+    return result
+
+
+def nfa_to_dfa():
+    dfa_states = []
+    dfa_transitions = {}
+    
+    start = frozenset(epsilon_closure({start_state}))
+    dfa_states.append(start)
+
+    unmarked = [start]
+
+    while unmarked:
+        current = unmarked.pop()
+        dfa_transitions[current] = {}
+
+        for symbol in ['a', 'b']:  # input symbols
+            next_states = epsilon_closure(move(current, symbol))
+            next_states = frozenset(next_states)
+
+            if next_states:
+                dfa_transitions[current][symbol] = next_states
+
+                if next_states not in dfa_states:
+                    dfa_states.append(next_states)
+                    unmarked.append(next_states)
+
+    return dfa_states, dfa_transitions
+
+
+dfa_states, dfa_transitions = nfa_to_dfa()
+
+print("DFA States:")
+for state in dfa_states:
+    print(state)
+
+print("\nDFA Transitions:")
+for state, trans in dfa_transitions.items():
+    print(f"{state} -> {trans}")
